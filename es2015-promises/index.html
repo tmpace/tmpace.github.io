@@ -1,0 +1,220 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>ES2015 Promises</title>
+    <meta name="description" content="">
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../assets/css/screen.css?v=767e0ebaf4">
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic%7COpen+Sans:700,400">
+
+    <link rel="canonical" href="http://localhost:2368/es2015-promises/">
+    <meta name="referrer" content="origin">
+    
+    <meta property="og:site_name" content="JStime">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ES2015 Promises">
+    <meta property="og:description" content="So everybody knows by now that Node.js is great when it comes to working with asynchronicity. Anyone who has worked in Node.js has dealt with this, and is probably familiar with a term called 'callback hell'. Prior to ES2015 (and some great libraries), the only way to deal">
+    <meta property="og:url" content="http://localhost:2368/es2015-promises/">
+    <meta property="article:published_time" content="2016-07-22T16:41:01.782Z">
+    <meta property="article:modified_time" content="2016-07-22T16:41:01.780Z">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="ES2015 Promises">
+    <meta name="twitter:description" content="So everybody knows by now that Node.js is great when it comes to working with asynchronicity. Anyone who has worked in Node.js has dealt with this, and is probably familiar with a term called 'callback hell'. Prior to ES2015 (and some great libraries), the only way to deal">
+    <meta name="twitter:url" content="http://localhost:2368/es2015-promises/">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Trevor Pace">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "JStime",
+        "logo": "http://localhost:2368/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Trevor Pace",
+        "image": "http://localhost:2368/content/images/2016/07/Photo-on-7-20-16-at-3-57-PM.jpg",
+        "url": "http://localhost:2368/author/trevor/",
+        "sameAs": []
+    },
+    "headline": "ES2015 Promises",
+    "url": "http://localhost:2368/es2015-promises/",
+    "datePublished": "2016-07-22T16:41:01.782Z",
+    "dateModified": "2016-07-22T16:41:01.780Z",
+    "description": "So everybody knows by now that Node.js is great when it comes to working with asynchronicity. Anyone who has worked in Node.js has dealt with this, and is probably familiar with a term called &#x27;callback hell&#x27;. Prior to ES2015 (and some great libraries), the only way to deal"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.8">
+    <link rel="alternate" type="application/rss+xml" title="JStime" href="http://localhost:2368/rss/">
+</head>
+<body class="post-template nav-closed">
+
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="index.html#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+            <li class="nav-home" role="presentation"><a href="http://localhost:2368/">Home</a></li>
+    </ul>
+        <a class="subscribe-button icon-feed" href="http://localhost:2368/rss/">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+            <a class="menu-button icon-menu" href="index.html#"><span class="word">Menu</span></a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">ES2015 Promises</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2016-07-22">22 July 2016</time> 
+            </section>
+        </header>
+
+        <section class="post-content">
+            <p>So everybody knows by now that Node.js is great when it comes to working with asynchronicity. Anyone who has worked in Node.js has dealt with this, and is probably familiar with a term called 'callback hell'. Prior to ES2015 (and some great libraries), the only way to deal with async in Node.js was to pass callbacks to any async function. It would look like so:</p>
+
+<pre><code>function callbackHell() {  
+  asyncFn(source, function(data) {
+    console.log('First async operation complete, running another.);
+    asyncFn(source, function(data) {
+        console.log('Finished running a nested async function.);
+      });
+  });
+}
+</code></pre>
+
+<p>As you can imagine, this can get pretty ugly. Luckily now thanks to ES2015 we have native Promises, and they work like this:</p>
+
+<pre><code>// Create a promise
+function asyncPromise() {  
+  var promise = new Promise(function(resolve, reject) {
+    asyncFn(source, function(err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(err);
+      }
+    });
+  });
+}
+
+// Use the promise
+asyncPromise().then(function() {  
+  console.log('Resolved a promise!');
+});
+</code></pre>
+
+<p>This is a lot cleaner, and much easier to look at. On top of that, whenever you need to do more asyc functions in a row, you can simply chain promises. All you need to do is ensure that the function you pass into the <code>.then()</code> call also returns a promise, and then you can do cool things like this:</p>
+
+<pre><code>promise1()  
+  .then(promise2)
+  .then(promise3)
+  .then(function(data) {
+    console.log('Finally done, here's some data!' + data);
+  });
+</code></pre>
+
+<p>And that's really it, I feel like a lot of people find Promises intimidating, but they're really easy to work with and make things a lot cleaner.</p>
+
+<p><strong><em>one note:</em></strong> I could have written a lot of this with ES2015 syntax as well, but I personally think that ES5 is easier to read for most people. The above promise example would look like this in ES2015:</p>
+
+<pre><code>// Create a promise
+const asyncPromise = () =&gt; {  
+  let promise = new Promise( (resolve, reject) =&gt; {
+    asyncFn(source, (err, data) =&gt; {
+      if (err) { 
+        reject(err) 
+      } else {
+        resolve(data);
+      }
+    }); 
+  });
+};
+
+// Use the promise
+asyncPromise().then( () =&gt; console.log('Finished!') );  
+</code></pre>
+
+<p>Doesn't really remove that many keystrokes, and in my opinion a lot harder to read. There's a lot of good to ES2015 syntax, but I didn't think it added anything to this conversation.</p>
+        </section>
+
+        <footer class="post-footer">
+
+
+            <figure class="author-image">
+                <a class="img" href="../author/trevor/" style="background-image: url(../content/images/2016/07/Photo-on-7-20-16-at-3-57-PM.jpg)"><span class="hidden">Trevor Pace's Picture</span></a>
+            </figure>
+
+            <section class="author">
+                <h4><a href="../author/trevor/">Trevor Pace</a></h4>
+
+                    <p>Read <a href="../author/trevor/">more posts</a> by this author.</p>
+                <div class="author-meta">
+                    
+                    
+                </div>
+            </section>
+
+
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=ES2015%20Promises&amp;url=http://localhost:2368/es2015-promises/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:2368/es2015-promises/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://localhost:2368/es2015-promises/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+
+
+        </footer>
+
+    </article>
+</main>
+
+<aside class="read-next">
+</aside>
+
+
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://localhost:2368">JStime</a> © 2016</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    
+    <script type="text/javascript" src="../assets/js/jquery.fitvids.js?v=767e0ebaf4"></script>
+    <script type="text/javascript" src="../assets/js/index.js?v=767e0ebaf4"></script>
+
+</body>
